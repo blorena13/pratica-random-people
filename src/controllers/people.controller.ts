@@ -1,9 +1,9 @@
 import httpStatus from "http-status";
-import peopleService from "services/people.services";
+import peopleService from "../services/people.services";
 import { Request, Response } from "express";
 
 async function getPeople(req : Request, res: Response){
-    const people = peopleService.getPeople();
+    const people =  await peopleService.getPeople();
     res.send(people);
 }
 

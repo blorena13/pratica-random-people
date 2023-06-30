@@ -1,13 +1,29 @@
-import { db } from "database/database"
+import configDatabase from "../database/database";
 
-function getpeopleRepository(){
-    return db.query(
-   `SELECT * FROM people;`
-    )
+type Person = {
+    id: number,
+    firstName: string,
+    lastName: string,
+}
+
+
+async function getpeopleRepository(id: number){
+    const query = `SELECT * FROM people WHERE id=$1;`
+    const result = await configDatabase.query<Person>(query, [id])
+    
+    return result.rows[0];
+}
+
+async function count(){
+    const query = `SELECT COUNT(*) FROM people;`
+    const result = await configDatabase.query(query);
+
+    return result.rows[0].count;
 }
 
 const peopleRepository = {
-    getpeopleRepository
+    getpeopleRepository,
+    count
 }
 
 export default peopleRepository;
